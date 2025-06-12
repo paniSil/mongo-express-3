@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+  head
+    title Reset Password
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/styles.css")
+    link(rel="icon", href="/favicon.png", type="image/png")
+
+  body(class=theme + '-theme-body')
+    .container(class=theme + '-theme-container') 
+      h1.mt-4 Reset Password
+
+      if message 
+        .alert.alert-info.mb-3= message 
+
+      if token
+        .row
+          .col-md-6.col-lg-4
+            form(method="POST", action=`/auth/reset/${token}`)
+              .form-group
+                label(for="password") New password:
+                input.form-control(type="password", name="password", required, minlength="6", placeholder="Введіть новий пароль")
+              button.btn.btn-primary.theme-btn.mb-4(type="submit") Set new password 
+      else
+
+        .alert.alert-danger.mt-3 Токен для скидання пароля недійсний або термін його дії закінчився. Будь ласка, спробуйте знову.
+
+      div
+        a.btn.btn-outline-primary.btn-sm.theme-btn(href=`/`) To Main Page

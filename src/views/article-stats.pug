@@ -1,0 +1,36 @@
+doctype html
+html(lang="uk")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title #{title}
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/styles.css")
+    link(rel="icon", href="/favicon.png", type="image/png")
+  body(class=theme + "-theme-body")
+    .container(class=theme + "-theme-container")
+      h1.mt-4 #{title}
+
+      div
+        a.btn.btn-outline-primary.btn-sm.theme-btn.mr-1(href=`/`) To Main Page
+        a.btn.btn-outline-primary.btn-sm.theme-btn(href=`/articles`) To Article List
+
+      .card.mt-4(class=theme + "-theme-card")
+        .h3.mt-4.ml-4 Article statistics by year
+        .card-body
+          if stats && stats.length > 0
+            ul.list-group
+              each stat in stats
+                li.ml-4
+                  strong Year: #{stat._id}
+                  |  - Articles: #{stat.totalArticles}
+          else
+            p.text-muted No stats yet.
+
+      if user
+        .mr-3.mt-4
+          strong Current user: 
+          | #{user.email}
+        form(action="/auth/logout", method="POST", style="display:inline;")
+          button.btn.btn-primary.btn-sm.mt-2.theme-btn(type="submit") Logout
