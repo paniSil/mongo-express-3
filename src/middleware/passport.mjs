@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { findUserByEmail, findUserById } from '../controllers/users.mjs';
+import { findUserByEmail, findUserById } from '../controllers/users/userHelpers.mjs';
 import bcrypt from 'bcrypt';
 
 export const initPassport = (db) => {

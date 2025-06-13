@@ -1,13 +1,7 @@
 import { Router } from 'express'
-import {
-    deleteUserByIdHandler,
-    getUserByIdHandler,
-    getUsersHandler,
-    postUsersHandler,
-    putUserByIdHandler
-} from '../controllers/users.mjs'
-
 import { validateUserBody, validateParamsUserId } from '../validators/userValidation.mjs'
+import { getUsersHandler } from '../controllers/users/usersController.mjs'
+import { postUserHandler, getUserByIdHandler, putUserByIdHandler, deleteUserByIdHandler } from '../controllers/users/userControllerSingle.mjs'
 
 
 const usersRouter = Router()
@@ -15,7 +9,7 @@ const usersRouter = Router()
 usersRouter
     .route('/')
     .get(getUsersHandler)
-    .post(validateUserBody, postUsersHandler)
+    .post(validateUserBody, postUserHandler)
 
 usersRouter
     .route('/:id')

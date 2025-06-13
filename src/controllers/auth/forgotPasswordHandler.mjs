@@ -1,83 +1,18 @@
-import express from 'express';
-import passport from 'passport';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
-import { createUserInDb, findUserByEmail, updateUserInDb } from '../controllers/users.mjs';
+import getDb from '../../utils/getDb.mjs';
+import { findUserByEmail } from '../users/userHelpers.mjs';
+import { updateUserInDb } from '../users/userDbController.mjs';
 
-const authRouter = express.Router();
+const getForgotPasswordPage = (req, res) => {
+    const theme = req.cookies.theme || 'light';
+    res.render('auth/forgot.pug', { theme });
+}
 
-authRouter.get('/login', (req, res) => {
-    const errorMessage = req.flash('error');
-    res.render('auth/login', {
-        title: 'Вхід',
-        theme: req.cookies.theme || 'light',
-        errorMessage: errorMessage.length ? errorMessage[0] : null
-    });
-});
-
-
-authRouter.post('/login',
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/auth/login',
-        failureFlash: true
-    })
-);
-
-authRouter.get('/register', (req, res) => {
-    res.render('auth/register', {
-        title: 'Реєстрація',
-        theme: req.cookies.theme || 'light'
-    });
-});
-
-authRouter.post('/register', async (req, res) => {
-    const db = req.app.locals.db;
-    if (!db) {
-        return res.status(500).send('Server error. DB is not connected');
-    }
-
-    const { name, email, password, age } = req.body;
-
-    if (!name || !email || !password) {
-        return res.status(400).send('Поля позначені * обов\'язкові для реєстрації.');
-    }
-
-    try {
-        const existingUser = await findUserByEmail(db, email);
-        if (existingUser) {
-            return res.status(409).send('Користувач з таким email вже зареєстрований.');
-        }
-        const newUser = await createUserInDb(db, name, email, password, age)
-
-        req.login(newUser, (err) => {
-            if (err) {
-                console.error('Registration error:', err);
-                return res.status(500).send('Помилка при логіні після реєстрації.');
-            }
-            res.redirect('/');
-        });
-    } catch (error) {
-        res.status(500).send('Помилка при реєстрації.');
-    }
-});
-
-authRouter.post('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        res.redirect('/auth/login');
-    });
-});
-
-authRouter.post('/forgot', async (req, res) => {
-    const db = req.app.locals.db;
-    if (!db) {
-        console.error('Помилка сервера: База даних не підключена в /auth/forgot (POST).');
-        return res.status(500).send('Помилка сервера: База даних не підключена.');
-    }
+const postForgotPassword = async (req, res) => {
+    const db = getDb(req, res);
+    if (!db) return;
 
     const { email } = req.body;
 
@@ -130,16 +65,11 @@ authRouter.post('/forgot', async (req, res) => {
         const theme = req.cookies.theme || 'light';
         res.status(500).render('auth/forgot', { message: 'Виникла помилка при обробці вашого запиту.', theme });
     }
-});
+}
 
-authRouter.get('/forgot', (req, res) => {
-    const theme = req.cookies.theme || 'light';
-    res.render('auth/forgot', { theme, message: null });
-});
-
-authRouter.get('/reset/:token', async (req, res) => {
-    const db = req.app.locals.db;
-    if (!db) { return res.status(500).send('Помилка сервера: База даних не підключена.'); }
+const getResetPasswordPage = async (req, res) => {
+    const db = getDb(req, res);
+    if (!db) return;
 
     const { token } = req.params;
     const theme = req.cookies.theme || 'light';
@@ -155,11 +85,11 @@ authRouter.get('/reset/:token', async (req, res) => {
     }
 
     res.render('auth/reset', { token: token, theme, message: null })
-});
+}
 
-authRouter.post('/reset/:token', async (req, res) => {
-    const db = req.app.locals.db;
-    if (!db) { return res.status(500).send('Помилка сервера: База даних не підключена.'); }
+const postResetPassword = async (req, res) => {
+    const db = getDb(req, res);
+    if (!db) return;
 
     const { token } = req.params;
     const { password } = req.body;
@@ -188,6 +118,6 @@ authRouter.post('/reset/:token', async (req, res) => {
     await updateUserInDb(db, user);
 
     res.redirect('/auth/login');
-});
+}
 
-export default authRouter;
+export { getForgotPasswordPage, postForgotPassword, getResetPasswordPage, postResetPassword }

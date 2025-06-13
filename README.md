@@ -28,7 +28,14 @@
 
 ## 2. Основа сервера
 
-Попередні версії сервера доступні за посиланнями [https://github.com/paniSil/hillel-express-2](https://github.com/paniSil/hillel-express-2), [https://github.com/paniSil/hillel-express-3](https://github.com/paniSil/hillel-express-3), [https://github.com/paniSil/hillel-express-4](https://github.com/paniSil/hillel-express-4), [https://github.com/paniSil/hillel-express-5](https://github.com/paniSil/hillel-express-5), [https://github.com/paniSil/mongo-express-1](https://github.com/paniSil/mongo-express-1) та [https://github.com/paniSil/mongo-express-2](https://github.com/paniSil/mongo-express-2).
+Попередні версії сервера доступні за посиланнями:
+
+- [https://github.com/paniSil/mongo-express-1](https://github.com/paniSil/mongo-express-1)
+- [https://github.com/paniSil/hillel-express-2](https://github.com/paniSil/hillel-express-2)
+- [https://github.com/paniSil/hillel-express-3](https://github.com/paniSil/hillel-express-3)
+- [https://github.com/paniSil/hillel-express-4](https://github.com/paniSil/hillel-express-4)
+- [https://github.com/paniSil/hillel-express-5](https://github.com/paniSil/hillel-express-5)
+
 В поточній версії аутентифікація та авторизація реалізовані за допомогою Passport.js з використанням сесій. Всі дані користувачів та статей тепер зберігаються та керуються в хмарній базі даних MongoDB Atlas. Валідація вхідних даних присутня. Для конфігураційних даних, таких як секретний ключ сесії та URI бази даних, використовуються змінні середовища (.env).
 Для статей та юзерів оновлені get-контролери з використанням курсору. Доданий маршрут для агрегації статистики та маршрут для виведення статистики за домопогою PUG-шаблону. Агрегаційний запит збирає статистичні дані з колекції статей (кількість статей за роком створення статті).
 

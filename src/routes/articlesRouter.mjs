@@ -1,21 +1,9 @@
 import { Router } from 'express'
-import {
-    getArticlesHandler,
-    postArticleHandler,
-    getArticleByIdHandler,
-    putArticleByIdHandler,
-    deleteArticleByIdHandler,
-    addNewArticlePageHandler,
-    addNewArticleHandler,
-    postManyArticlesHandler,
-    putManyArticlesHandler,
-    deleteManyArticles,
-    replaceArticleHandler,
-    getArticleStatsHandler,
-    getArticleStatsPageHandler
-} from '../controllers/articles.mjs'
-
 import { validateArticleBody, validateParamsArticleId, validateUpdateManyArticlesBody, validateReplaceArticle } from '../validators/articleValidation.mjs'
+import { addNewArticleHandler, addNewArticlePageHandler, getArticleStatsPageHandler } from '../controllers/articles/articlePageControllers.mjs';
+import { getArticlesHandler, getArticleStatsHandler } from '../controllers/articles/articleController.mjs';
+import { postArticleHandler, replaceArticleHandler, getArticleByIdHandler, putArticleByIdHandler, deleteArticleByIdHandler } from '../controllers/articles/articleControllerSingle.mjs';
+import { postManyArticlesHandler, putManyArticlesHandler, deleteManyArticles } from '../controllers/articles/articlesControllerMany.mjs';
 
 
 const articlesRouter = Router()
@@ -46,4 +34,5 @@ articlesRouter
 
 articlesRouter.get('/stats', getArticleStatsHandler);
 articlesRouter.get('/stats/view', getArticleStatsPageHandler);
+
 export default articlesRouter

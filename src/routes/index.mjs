@@ -1,10 +1,9 @@
 import { Router } from "express";
-import rootRouter from "./root.mjs";
-import usersRouter from "./users.mjs";
-import articlesRouter from "./articles.mjs";
-import themeRouter from "./theme.mjs";
-import authRouter from "./auth.mjs";
-
+import rootRouter from "./rootRouter.mjs";
+import usersRouter from "./usersRouter.mjs";
+import articlesRouter from "./articlesRouter.mjs";
+import themeRouter from "./themeRouter.mjs";
+import authRouter from "./authRouter.mjs";
 import { protect, authorize } from "../middleware/authHandler.mjs";
 
 
