@@ -29,7 +29,7 @@ html(lang="en")
 
       a.btn.btn-outline-primary.btn-sm.mt-4.theme-btn(href="/users") Back to User List
       if userProfile
-        div.mr-3.mt-4 Current user: #{userProfile.email}
+        div.mr-3.mt-4 Current user: #{user.email}
           div
             form(action="/auth/logout" method="POST" style="display:inline;")
               button.btn.btn-primary.btn-sm.mt-2.theme-btn(type="submit") Logout
